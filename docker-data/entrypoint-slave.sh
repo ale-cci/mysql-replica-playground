@@ -32,16 +32,6 @@ _main() {
 
         if [ -z "$DATABASE_ALREADY_EXISTS" ]; then
             docker_init_database_dir "$@"
-
-            mysql_note "Starting temporary server"
-            docker_temp_server_start "$@"
-            mysql_note "Temporary server started."
-
-            docker_process_init_files /docker-entrypoint-initdb.d/*
-
-            mysql_note "Stopping temporary server"
-            docker_temp_server_stop
-            mysql_note "Temporary server stopped"
         fi
     fi
     mysql_note "MySQL init process done. Ready for start up."

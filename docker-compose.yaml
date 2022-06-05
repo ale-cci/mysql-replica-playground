@@ -14,18 +14,23 @@ services:
     ports:
     - 3306:3306
 
-  slave-1:
-    image: mysql:8
-    entrypoint: /slave-entrypoint.sh --server-id=2 --read-only
-    volumes:
-    - data-slave-1:/var/lib/mysql
-    - ./init-slave.sql:/docker-entrypoint-initdb.d/init.sql
-    - ./docker-data/entrypoint-slave.sh:/slave-entrypoint.sh
-    ports:
-    - 3307:3306
-    depends_on:
-    - master
+      #   replica-1:
+      #     image: mysql:8
+      #     entrypoint: /slave-entrypoint.sh --server-id=2 --read-only
+      #     volumes:
+      #     - data-slave-1:/var/lib/mysql
+      #     - ./init-slave.sql:/docker-entrypoint-initdb.d/init.sql
+      #     - ./docker-data/entrypoint-slave.sh:/slave-entrypoint.sh
+      #     depends_on:
+      #     - master
+      #
+      #   mirror-mgr:
+      #     image: python:3
+      #     depends_on:
+      #     - master
+
 
 volumes:
   data-master:
-  data-slave-1:
+  data-replica-1:
+  data-replica-2:
