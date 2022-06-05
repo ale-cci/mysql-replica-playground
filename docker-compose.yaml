@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  master:
+    image: mysql:8
+    environment:
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: test
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+    volumes:
+      - data-master:/var/lib/mysql
+      - ./docker-data/init-master.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+    - 3306:3306
+
+  slave-1:
+    image: mysql:8
+    entrypoint: /slave-entrypoint.sh --server-id=2 --read-only
+    volumes:
+    - data-slave-1:/var/lib/mysql
+    - ./init-slave.sql:/docker-entrypoint-initdb.d/init.sql
+    - ./docker-data/entrypoint-slave.sh:/slave-entrypoint.sh
+    ports:
+    - 3307:3306
+    depends_on:
+    - master
+
+volumes:
+  data-master:
+  data-slave-1:
